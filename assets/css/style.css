@@ -1,6 +1,4 @@
-/* ==========================================================================
-   1. FONTS & DESIGN TOKENS (:root)
-   ========================================================================== */
+/* === 1. FONTS & DESIGN TOKENS === */
 @font-face {
     font-family: 'Gugi';
     src: url('../fonts/Gugi/Gugi-Regular.ttf');
@@ -19,7 +17,6 @@
     --brand-hover: #d97706;
     --brand-light: rgba(245, 158, 11, 0.15);
 
-    /* Neutral Colors (Backgrounds & Borders) */
     --bg-main: #f4f5f6;
     --bg-white: #ffffff;
     --bg-light: #f8f9fa;
@@ -55,9 +52,24 @@
     --transition-fast: all 0.2s ease;
 }
 
-/* ==========================================================================
-   2. RESET & BASE STYLES
-   ========================================================================== */
+[data-theme="dark"] {
+    --bg-main: #121212;
+    --bg-white: #1e1e1e;
+    --bg-light: #2a2a2a;
+    --bg-muted: #2a2a2a;
+    --border-light: #2c2c2c;
+    --border-main: #333333;
+    --border-dark: #444444;
+
+    /* Text Colors */
+    --text-dark: #ffffff;
+    --text-main: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-muted: #888888;
+    --text-light: #666666;
+}
+
+/* === 2. RESET & BASE STYLES === */
 * {
     padding: 0;
     margin: 0;
@@ -73,6 +85,7 @@ body {
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 main {
@@ -85,9 +98,7 @@ h1, h2, .logo h2, .details-title {
     color: var(--text-dark);
 }
 
-/* ==========================================================================
-   3. HEADER & NAVIGATION
-   ========================================================================== */
+/* === 3. HEADER & NAVIGATION === */
 header {
     display: flex;
     justify-content: space-between;
@@ -98,6 +109,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 header .logo {
@@ -122,6 +134,7 @@ header nav ul {
     display: flex;
     list-style: none;
     gap: 24px;
+    align-items: center;
 }
 
 header nav ul li a {
@@ -139,13 +152,35 @@ header nav ul li a:hover {
     color: var(--brand-color);
 }
 
-/* ==========================================================================
-   4. SEARCH & FILTER CONTROLS
-   ========================================================================== */
+.btn-theme {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-theme:hover .fa-moon {
+    color: #8931dc;
+}
+
+.btn-theme:hover .fa-sun {
+    color: #f59e0b;
+}
+
+/* === 4. SEARCH & FILTER CONTROLS === */
 .options {
+    background: var(--bg-white);
     padding: 40px 20px;
     text-align: center;
     border-bottom: 1px solid var(--border-main);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .options h1 {
@@ -178,6 +213,8 @@ header nav ul li a:hover {
     padding: 12px 16px 12px 44px;
     border: 1px solid var(--border-dark);
     border-radius: var(--radius-pill);
+    background: var(--bg-white);
+    color: var(--text-main);
     font-family: var(--font-body);
     font-size: 0.95rem;
     outline: none;
@@ -247,9 +284,7 @@ header nav ul li a:hover {
     color: var(--text-main);
 }
 
-/* ==========================================================================
-   5. RECIPE GRID & CARDS
-   ========================================================================== */
+/* === 5. RECIPE GRID & CARDS === */
 #recipes {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -293,7 +328,7 @@ header nav ul li a:hover {
     position: absolute;
     top: 12px;
     background: rgba(33, 37, 41, 0.75);
-    color: var(--text-white);
+    color: #ffffff;
     backdrop-filter: blur(4px);
 }
 
@@ -391,12 +426,16 @@ header nav ul li a:hover {
 .difficulty.medium { background: #fef3c7; color: #92400e; }
 .difficulty.hard   { background: #fee2e2; color: #991b1b; }
 
+[data-theme="dark"] .difficulty.easy   { background: rgba(6, 95, 70, 0.4); color: #6ee7b7; }
+[data-theme="dark"] .difficulty.medium { background: rgba(146, 64, 14, 0.4); color: #fcd34d; }
+[data-theme="dark"] .difficulty.hard   { background: rgba(153, 27, 27, 0.4); color: #fca5a5; }
+
 .card button.btn-details {
     width: 100%;
     margin-top: 12px;
     padding: 10px;
     background: var(--bg-light);
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--border-dark);
     border-radius: var(--radius-md);
     font-family: var(--font-body);
     color: var(--text-secondary);
@@ -408,13 +447,11 @@ header nav ul li a:hover {
 
 .card button.btn-details:hover {
     background: var(--brand-color);
-    color: var(--text-white);
+    color: #ffffff;
     border-color: var(--brand-color);
 }
 
-/* ==========================================================================
-   6. RECIPE DETAILS PAGE & UTILITIES
-   ========================================================================== */
+/* === 6. RECIPE DETAILS PAGE & UTILITIES === */
 .recipe-details-card {
     padding: 24px;
 }
@@ -423,7 +460,7 @@ header nav ul li a:hover {
     width: 100%;
     height: 350px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     margin-bottom: 20px;
 }
 
@@ -438,7 +475,7 @@ header nav ul li a:hover {
     justify-content: center;
     gap: 16px;
     margin-bottom: 24px;
-    color: #555555;
+    color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
@@ -450,7 +487,7 @@ header nav ul li a:hover {
 .details-list {
     padding-left: 20px;
     line-height: 1.8;
-    color: #333333;
+    color: var(--text-main);
 }
 
 .ingredients-list {
@@ -477,15 +514,14 @@ header nav ul li a:hover {
     font-weight: 500;
 }
 
-/* ==========================================================================
-   7. FOOTER
-   ========================================================================== */
+/* === 7. FOOTER === */
 footer {
     background: var(--bg-white);
     border-top: 1px solid var(--border-main);
     padding: 24px 40px;
     text-align: center;
     margin-top: auto;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 footer .copyright {
