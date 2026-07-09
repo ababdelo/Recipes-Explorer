@@ -1,5 +1,5 @@
 <h1 align="center">
-  Recipes Explorer - Dynamic Recipe Catalog
+  Recipes Explorer: Dynamic Recipe Catalog
 </h1>
 
 ![Recipes-Explorer](https://socialify.git.ci/ababdelo/Recipes-Explorer/image?font=JetBrains+Mono&forks=1&issues=1&logo=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fababdelo%2FASSETS42ARCHIVE%40main%2Fassets%2Fspecific%2FRECIPES%2520EXPLORER%2Flogo.png&name=1&owner=1&pattern=Circuit+Board&pulls=1&stargazers=1&theme=Dark)
@@ -18,9 +18,17 @@ Ever found yourself staring at the fridge, wondering what to cook? Recipes Explo
 
 This web application connects to the DummyJSON Recipes API to bring you a diverse catalogue of dishes. Search by name, filter by cuisine or difficulty, and dive into detailed instructions, all in a smooth, interactive interface built with vanilla JavaScript and jQuery.
 
-![Recipes Explorer Screenshot](assets/imgs/preview/desktop.png)
-![Recipes Explorer Screenshot](assets/imgs/preview/tablet.png)
-![Recipes Explorer Screenshot](assets/imgs/preview/mobile.png)
+## 📸 Previews
+
+<p align="center">
+  <img src="assets/imgs/preview/desktop.png" width="80%" alt="Desktop Preview" />
+</p>
+
+<p align="center">
+  <img src="assets/imgs/preview/tablet.png" width="38%" alt="Tablet Preview" />
+  &nbsp; &nbsp;
+  <img src="assets/imgs/preview/mobile.png" width="38%" alt="Mobile Preview" />
+</p>
 
 ## ✨ Features
 
