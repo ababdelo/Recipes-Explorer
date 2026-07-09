@@ -77,7 +77,6 @@ function generateRecipeCard(recipe, parentContainer) {
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     setFooterYear();
-
     const recipesGrid = document.getElementById('recipes');
     if (recipesGrid) {
         recipesGrid.addEventListener('click', (event) => {
@@ -85,6 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (favButton) {
                 const recipeId = parseInt(favButton.dataset.id, 10);
                 toggleFavorite(recipeId, favButton);
+                if (window.location.pathname.includes('favorites.html')) {
+                    favButton.closest('.card').remove();
+                    if (recipesGrid.children.length === 0) {
+                        recipesGrid.innerHTML = `<div class="status-msg">You haven't added any favorites yet!</div>`;
+                    }
+                }
             }
         });
     }
