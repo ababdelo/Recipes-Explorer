@@ -450,8 +450,32 @@
                 target="_blank" rel="noopener noreferrer">ed42</a>. All rights reserved.</p>
     </footer>
     <script>
+        let allRecipes = [];
+
         function setFooterYear() {
             document.getElementById('date').textContent = new Date().getFullYear();
+        }
+
+        function setFilters(recipes) {
+            const cuisineSel = document.getElementById('cuisine');
+            const difficultySel = document.getElementById('difficulty');
+            const mealTypeSel = document.getElementById('mealType');
+
+            [cuisineSel, difficultySel, mealTypeSel].forEach(select => select.options.length = 1);
+
+            const allCuisines = [...new Set(recipes.map(recipe => recipe.cuisine))];
+            const allDifficulties = [...new Set(recipes.map(recipe => recipe.difficulty))];
+            const allMealTypes = [...new Set(recipes.flatMap(recipe => recipe.mealType))];
+
+            allCuisines.sort().forEach(cuisine => {
+                cuisineSel.add(new Option(cuisine, cuisine.toLowerCase()));
+            });
+            allDifficulties.sort().forEach(difficulty => {
+                difficultySel.add(new Option(difficulty, difficulty.toLowerCase()));
+            });
+            allMealTypes.sort().forEach(mealType => {
+                mealTypeSel.add(new Option(mealType, mealType.toLowerCase()));
+            });
         }
 
         async function getRecipes() {
@@ -464,6 +488,8 @@
 
                 const data = await response.json();
                 allRecipes = data.recipes;
+
+                setFilters(allRecipes);
                 container.innerHTML = '';
 
                 document.getElementById('found').textContent = allRecipes.length;
