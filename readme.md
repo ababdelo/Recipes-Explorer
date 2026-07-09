@@ -74,7 +74,7 @@ cd Recipes=Explorer
 
 ## 🖥️ Live Demo
 
-> 🔗 **Play it live:** [https://ababdelo.github.io/Recipes=Explorer/](https://ababdelo.github.io/Recipes=Explorer/)
+> 🔗 **Play it live:** [https://ababdelo.github.io/Recipes=Explorer/](https://ababdelo.github.io/Recipes-Explorer/)
 
 ## 🤝 Contributing
 
