@@ -5,11 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="shortcut icon" href="./assets/imgs/logo.png" type="image/png">
+
     <style>
         * {
             padding: 0;
             margin: 0;
             box-sizing: border-box;
+        }
+
+        :root {
+            --brand-color: #f59e0b;
+            --brand-hover: #d97706;
         }
 
         body {
@@ -19,6 +27,192 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #212529;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header .logo img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+        }
+
+        header .logo h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #111;
+        }
+
+        header nav ul {
+            list-style: none;
+        }
+
+        header nav ul a {
+            text-decoration: none;
+            color: #495057;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        header nav ul a:hover {
+            background: #fffbeb;
+            color: var(--brand-hover);
+            border-color: #fde68a;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .options {
+            max-width: 1000px;
+            margin: 40px auto 0;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .options h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #111;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .options>p {
+            font-size: 1.05rem;
+            color: #6c757d;
+            max-width: 500px;
+            margin-bottom: 24px;
+        }
+
+        .options .search {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 640px;
+            background: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 14px 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+        }
+
+        .options .search:focus-within {
+            border-color: var(--brand-color);
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15);
+        }
+
+        .options .search i {
+            color: #888888;
+            font-size: 1.1rem;
+            transition: color 0.2s ease;
+        }
+
+        .options .search:focus-within i {
+            color: var(--brand-color);
+        }
+
+        .search input[type="text"] {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 1rem;
+            color: #212529;
+            background: transparent;
+        }
+
+        .controls-bar {
+            max-width: 1400px;
+            margin: 32px auto -10px;
+            padding: 12px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .filters-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 6px 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            transition: border-color 0.2s ease;
+        }
+
+        .filter-item:hover,
+        .filter-item:focus-within {
+            border-color: var(--brand-color);
+        }
+
+        .filter-item label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .filter-item select {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 0.85rem;
+            color: #212529;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .results-meta p {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #6c757d;
+            white-space: nowrap;
+        }
+
+        .results-meta span {
+            color: var(--brand-color);
+            font-weight: 700;
         }
 
         #recipes {
@@ -63,13 +257,13 @@
             position: absolute;
             top: 12px;
             left: 12px;
-            background: rgba(33, 37, 41, 0.65);
+            background: rgba(33, 37, 41, 0.75);
             color: #ffffff;
             font-size: 0.7rem;
             font-weight: 700;
             letter-spacing: 0.8px;
             padding: 4px 10px;
-            border-radius: 7px;
+            border-radius: 6px;
         }
 
         .card-body {
@@ -80,7 +274,7 @@
             justify-content: space-between;
         }
 
-        .card-body > div {
+        .card-body>div {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -98,18 +292,51 @@
         }
 
         .rating {
-            font-weight: 600;
-            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 700;
+            color: #111111;
+            font-size: 0.9rem;
+        }
+
+        .rating i {
+            color: var(--brand-color);
+            font-size: 0.85rem;
+            margin-top: -1px;
+        }
+
+        .rating .reviews {
+            color: #888888;
+            font-weight: 500;
+            margin-left: 2px;
         }
 
         .difficulty {
-            background: #f1f3f5;
-            color: #495057;
-            padding: 3px 8px;
-            border-radius: 4px;
+            padding: 3px 10px;
+            border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: capitalize;
+            border: 1px solid transparent;
+        }
+
+        .difficulty.easy {
+            background: #f1fdf4;
+            color: #166534;
+            border-color: #dcfce7;
+        }
+
+        .difficulty.medium {
+            background: #fffbeb;
+            color: #92400e;
+            border-color: #fef3c7;
+        }
+
+        .difficulty.hard {
+            background: #fef2f2;
+            color: #991b1b;
+            border-color: #fee2e2;
         }
 
         .card button {
@@ -127,9 +354,9 @@
         }
 
         .card button:hover {
-            background: #3e4246;
+            background: var(--brand-color);
             color: #ffffff;
-            border-color: #212529;
+            border-color: var(--brand-color);
         }
 
         .status-msg {
@@ -138,13 +365,95 @@
             font-weight: 600;
             padding: 40px;
         }
+
+        footer {
+            background: #ffffff;
+            border-top: 1px solid #e9ecef;
+            padding: 24px 20px;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        footer .copyright {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        footer .copyright a {
+            color: #212529;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dotted #adb5bd;
+            transition: border-color 0.2s;
+        }
+
+        footer .copyright a:hover {
+            color: var(--brand-color);
+            border-bottom: 1px solid var(--brand-color);
+        }
     </style>
 </head>
 
 <body>
-    <header></header>
-    <main id="recipes"></main>
+    <header>
+        <div class="logo">
+            <img src="./assets/imgs/logo.png" alt="Logo">
+            <h2>Recipes Explorer</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="favorites.html"><i class="fa-regular fa-heart"></i> Favorites</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="options">
+            <h1>Discover Your Next Dish</h1>
+            <p>Browse different hand-picked recipes from around the globe.</p>
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search" placeholder="Search for a recipe..." autocomplete="off">
+            </div>
+        </div>
+
+        <div class="controls-bar">
+            <div class="filters-group">
+                <div class="filter-item">
+                    <label for="cuisine">Cuisine:</label>
+                    <select id="cuisine">
+                        <option value="all" selected>All Cuisines</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="difficulty">Difficulty:</label>
+                    <select id="difficulty">
+                        <option value="all" selected>All Difficulties</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="mealType">Meal Type:</label>
+                    <select id="mealType">
+                        <option value="all" selected>All Meal Types</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="results-meta">
+                <p>Showing <span id="found">0</span> of <span id="total">0</span> recipes</p>
+            </div>
+        </div>
+
+        <div id="recipes"></div>
+    </main>
+    <footer>
+        <p class="copyright">© <span id="date"></span> Recipes Explorer. Developed by <a href="https://ed42.tech"
+                target="_blank" rel="noopener noreferrer">ed42</a>. All rights reserved.</p>
+    </footer>
     <script>
+        function setFooterYear() {
+            document.getElementById('date').textContent = new Date().getFullYear();
+        }
+
         async function getRecipes() {
             const container = document.getElementById('recipes');
             try {
@@ -156,7 +465,10 @@
                 const data = await response.json();
                 allRecipes = data.recipes;
                 container.innerHTML = '';
-                
+
+                document.getElementById('found').textContent = allRecipes.length;
+                document.getElementById('total').textContent = allRecipes.length;
+
                 allRecipes.forEach(recipe => {
                     const card = document.createElement('div');
                     card.className = 'card';
@@ -168,12 +480,16 @@
                         <div class='card-body'>
                             <div>
                                 <span>${recipe.mealType.join(', ')}</span>
-                                <span class='rating'>⭐ ${recipe.rating} (${recipe.reviewCount})</span>    
+                                <span class='rating'>
+                                    <i class="fa-solid fa-star"></i> 
+                                    <span>${recipe.rating}</span> 
+                                    <span class='reviews'>(${recipe.reviewCount} reviews)</span>
+                                </span>    
                             </div>
                             <h2>${recipe.name}</h2>
                             <div>
-                                <p>🕒 ${recipe.prepTimeMinutes} min</p>
-                                <span class='difficulty'>${recipe.difficulty}</span>
+                                <p><i class="fa-regular fa-clock"></i> ${recipe.prepTimeMinutes} min</p>
+                                <span class='difficulty ${recipe.difficulty.toLowerCase()}'>${recipe.difficulty}</span>
                             </div>
                             <button class='btn-details' data-id='${recipe.id}'>See Details</button>
                         </div>
@@ -187,6 +503,7 @@
             }
         }
         getRecipes();
+        setFooterYear();
     </script>
 </body>
 
