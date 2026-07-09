@@ -1,19 +1,72 @@
-# Recipes Explorer
+<h1 align="center">
+  Recipes Explorer - Dynamic Recipe Catalog
+</h1>
 
-## 📖 Overview
+![Recipes-Explorer](https://socialify.git.ci/ababdelo/Recipes-Explorer/image?font=JetBrains+Mono&forks=1&issues=1&logo=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fababdelo%2FASSETS42ARCHIVE%40main%2Fassets%2Fspecific%2FRECIPES%2520EXPLORER%2Flogo.png&name=1&owner=1&pattern=Circuit+Board&pulls=1&stargazers=1&theme=Dark)
 
-Ever found yourself staring at the fridge, wondering what to cook? **Recipes Explorer** is here to help.
+<p align="center">
+  <img src="https://img.shields.io/github/last-commit/ababdelo/Recipes-Explorer?style=flat-square" /> &nbsp;&nbsp;
+  <img src="https://img.shields.io/github/commit-activity/m/ababdelo/Recipes-Explorer?style=flat-square" /> &nbsp;&nbsp;
+  <img src="https://img.shields.io/github/followers/ababdelo" /> &nbsp;&nbsp;
+  <img src="https://img.shields.io/github/stars/ababdelo/Recipes-Explorer" /> &nbsp;&nbsp;
+  <img src="https://img.shields.io/github/contributors/ababdelo/Recipes-Explorer?style=flat-square" />
+</p>
 
-This web application connects to the DummyJSON Recipes API to bring you a diverse catalogue of dishes. 
-Search by name, filter by cuisine or difficulty, and dive into detailed instructions, all in a smooth, 
-interactive interface built with vanilla JavaScript and jQuery.
+## Overview
 
-## 🚧 Work in Progress
+Ever found yourself staring at the fridge, wondering what to cook? Recipes Explorer is here to help.
 
-This project is currently under active development. 
+This web application connects to the DummyJSON Recipes API to bring you a diverse catalogue of dishes. Search by name, filter by cuisine or difficulty, and dive into detailed instructions, all in a smooth, interactive interface built with vanilla JavaScript and jQuery.
 
-The goal is to consume the DummyJSON Recipes API and provide search, filtering, and detailed recipe views using vanilla JavaScript and jQuery.
+![Recipes Explorer Screenshot](assets/imgs/preview/desktop.png)
+![Recipes Explorer Screenshot](assets/imgs/preview/tablet.png)
+![Recipes Explorer Screenshot](assets/imgs/preview/mobile.png)
 
+## ✨ Features
+
+- **Dynamic Catalog**: Real-time recipe fetching from DummyJSON.
+- **Smart Filters**: Search by name or filter by cuisine, difficulty, and meal type.
+- **Theme Switcher**: Persistent Dark/Light mode toggle with `localStorage`.
+- **Favorites System**: Save your favorite recipes locally; your choices are saved even after closing the browser.
+- **jQuery Animations**: Smooth visual transitions for card loading, favoriting/unfavoriting, and content rendering.
+- **Responsive Design**: Clean UI that works across all devices.
+
+## 📂 Project Structure
+
+```text
+Recipes-Explorer/
+├── assets/
+│   ├── css/           # Main styles & FontAwesome
+│   ├── js/            # Modular scripts (index, common, favorites, details, theme)
+│   ├── imgs/          # Logos & assets
+│   └── fonts/         # Local Gugi and Archivo fonts
+├── index.html         # Main recipe listing page
+├── favorites.html     # User saved recipes
+├── recipe-details.html# Single recipe view
+└── README.md          # Project documentation
+```
+
+## 🚀 How to Run:
+
+### Prerequisites
+- Any modern web browser (Chrome, Firefox, Edge, Safari)
+- No server required: works directly from file system
+
+### Steps
+
+1. **Clone the repository: **
+
+```bash
+git clone https://github.com/ababdelo/Recipes=Explorer.git
+cd Recipes=Explorer
+```
+
+2. **Open in Browser: **
+   Simply open index.html in your preferred web browser. No backend server is required as the application consumes the public DummyJSON API directly.
+
+## 🖥️ Live Demo
+
+> 🔗 **Play it live:** [https://ababdelo.github.io/Recipes=Explorer/](https://ababdelo.github.io/Recipes=Explorer/)
 
 ## 🤝 Contributing
 
@@ -25,23 +78,17 @@ Contributions are welcome! Feel free to:
 - Push to the branch (`git push origin features/feature-name`)
 - Open a Pull Request
 
----
-
 ## 📄 License
 
 This project is licensed under the MIT License: see the [LICENSE](license) file for details.
 
----
-
 ## 🙏 Acknowledgements
 
-- [Font Awesome](https://fontawesome.com/) for the icons
-- [Google Fonts](https://fonts.google.com/) for Roboto Mono
+- [Font Awesome](https://fontawesome.com/) for the font icons
+- [Google Fonts](https://fonts.google.com/) for Gugi && Archivo Mono
 - [Dummy JSON](https://dummyjson.com/) for providing the free recipe API
 - [StorySet](https://storyset.com/) for providing the free beautifull customized illustrations
 - [icons8](https://icons8.com/) for providing the free eastethic icons and logos
-
----
 
 ## ☎️ Contact
 
