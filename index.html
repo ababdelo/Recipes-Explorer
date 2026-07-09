@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <div id="recipes"></div>
     <script>
         async function getRecipes() {
             try {
@@ -17,10 +18,25 @@
                 }
 
                 const data = await response.json();
-
+                const container = document.getElementById('recipes')
+                container.innerHTML = '';
                 data.recipes.forEach(recipe => {
-                    console.log(`- ID: ${recipe.id}\n- NAME: ${recipe.name}\n- IMAGE: ${recipe.image}\n- CUISINE: ${recipe.cuisine} | RATING: ${recipe.rating} | REVIEWS: ${recipe.reviewCount}\n- PREP TIME: ${recipe.prepTimeMinutes} min | COOK TIME: ${recipe.cookTimeMinutes} min\n- MEAL TYPE: ${recipe.mealType.join(', ')}\n- TAGS: ${recipe.tags.join(', ')}\n- INGREDIENTS:\n\t. ${recipe.ingredients.join('\n\t. ')}\n- INSTRUCTIONS:\n${recipe.instructions.map((step, index) => `\t${index + 1}. ${step}`).join('\n')}\n`);
+                    const card = document.createElement('div');
+                    card.innerHTML = `
+                        <img src= '${recipe.image}'/>
+                        <div>
+                            <p>${recipe.cuisine.toUpperCase()}</p>
+                            <p>${recipe.rating} ⭐</p>    
+                        </div>
+                        <h2>${recipe.name}</h2>
+                        <div>
+                            <p>🕒 ${recipe.prepTimeMinutes} min</p>
+                            <p>${recipe.difficulty}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
                 });
+
             } catch (error) {
                 console.error('Error fetching recipes:', error);
             }
