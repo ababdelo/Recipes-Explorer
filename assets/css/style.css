@@ -1,419 +1,504 @@
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+/* ==========================================================================
+   1. FONTS & DESIGN TOKENS (:root)
+   ========================================================================== */
+@font-face {
+    font-family: 'Gugi';
+    src: url('../fonts/Gugi/Gugi-Regular.ttf');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Archivo';
+    src: url("../fonts/Archivo/Archivo-VariableFont_wdth\,wght.ttf");
+    font-display: swap;
 }
 
 :root {
-  --brand-color: #f59e0b;
-  --brand-hover: #d97706;
+    /* Brand Colors */
+    --brand-color: #f59e0b;
+    --brand-hover: #d97706;
+    --brand-light: rgba(245, 158, 11, 0.15);
+
+    /* Neutral Colors (Backgrounds & Borders) */
+    --bg-main: #f4f5f6;
+    --bg-white: #ffffff;
+    --bg-light: #f8f9fa;
+    --bg-muted: #e9ecef;
+    --border-light: #f1f3f5;
+    --border-main: #e9ecef;
+    --border-dark: #ced4da;
+
+    /* Text Colors */
+    --text-dark: #111111;
+    --text-main: #212529;
+    --text-secondary: #495057;
+    --text-muted: #6c757d;
+    --text-light: #adb5bd;
+    --text-white: #ffffff;
+
+    /* Typography */
+    --font-title: 'Gugi', cursive, sans-serif;
+    --font-body: 'Archivo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    /* Shadows & Effects */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --shadow-logo: 0 2px 4px rgba(0, 0, 0, 0.15);
+    
+    /* Border Radii */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 12px;
+    --radius-pill: 50px;
+
+    /* Transitions */
+    --transition-fast: all 0.2s ease;
+}
+
+/* ==========================================================================
+   2. RESET & BASE STYLES
+   ========================================================================== */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 body {
-  min-height: 100vh;
-  width: 100vw;
-  background: #f4f5f6;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
-  color: #212529;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 40px;
-  background: #ffffff;
-  border-bottom: 1px solid #e9ecef;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-header .logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-header .logo img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
-}
-
-header .logo h2 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  color: #111;
-}
-
-header nav ul {
-  list-style: none;
-}
-
-header nav ul a {
-  text-decoration: none;
-  color: #495057;
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
-}
-
-header nav ul a:hover {
-  background: #fffbeb;
-  color: var(--brand-hover);
-  border-color: #fde68a;
+    min-height: 100vh;
+    width: 100vw;
+    background: var(--bg-main);
+    font-family: var(--font-body);
+    color: var(--text-main);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 main {
-  flex: 1;
+    flex: 1;
 }
 
+h1, h2, .logo h2, .details-title {
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+/* ==========================================================================
+   3. HEADER & NAVIGATION
+   ========================================================================== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border-main);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+header .logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: drop-shadow(var(--shadow-logo));
+}
+
+header .logo h2 {
+    font-size: 1.25rem;
+    letter-spacing: -0.5px;
+}
+
+header nav ul {
+    display: flex;
+    list-style: none;
+    gap: 24px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+header nav ul li a:hover {
+    color: var(--brand-color);
+}
+
+/* ==========================================================================
+   4. SEARCH & FILTER CONTROLS
+   ========================================================================== */
 .options {
-  max-width: 1000px;
-  margin: 40px auto 0;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-main);
 }
 
 .options h1 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #111;
-  letter-spacing: -0.5px;
-  margin-bottom: 8px;
+    font-size: 2rem;
+    margin-bottom: 8px;
 }
 
-.options > p {
-  font-size: 1.05rem;
-  color: #6c757d;
-  max-width: 500px;
-  margin-bottom: 24px;
+.options p {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-size: 1rem;
 }
 
-.options .search {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  max-width: 640px;
-  background: #ffffff;
-  border: 2px solid #e9ecef;
-  border-radius: 12px;
-  padding: 14px 18px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  transition: all 0.2s ease;
+.search {
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
 }
 
-.options .search:focus-within {
-  border-color: var(--brand-color);
-  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15);
+.search i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
 }
 
-.options .search i {
-  color: #888888;
-  font-size: 1.1rem;
-  transition: color 0.2s ease;
+.search input {
+    width: 100%;
+    padding: 12px 16px 12px 44px;
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: var(--transition-fast);
 }
 
-.options .search:focus-within i {
-  color: var(--brand-color);
-}
-
-.search input[type="text"] {
-  border: none;
-  outline: none;
-  width: 100%;
-  font-size: 1rem;
-  color: #212529;
-  background: transparent;
+.search input:focus {
+    border-color: var(--brand-color);
+    box-shadow: 0 0 0 3px var(--brand-light);
 }
 
 .controls-bar {
-  max-width: 1400px;
-  margin: 32px auto -10px;
-  padding: 12px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  border-bottom: 1px solid #e9ecef;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 50px;
 }
 
 .filters-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .filter-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #ffffff;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  padding: 6px 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-  transition: border-color 0.2s ease;
-}
-
-.filter-item:hover,
-.filter-item:focus-within {
-  border-color: var(--brand-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .filter-item label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
 }
 
 .filter-item select {
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 0.85rem;
-  color: #212529;
-  font-weight: 600;
-  cursor: pointer;
+    padding: 8px 12px;
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-md);
+    background: var(--bg-white);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--text-main);
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.filter-item select:focus {
+    border-color: var(--brand-color);
 }
 
 .results-meta p {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #6c757d;
-  white-space: nowrap;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
 }
 
 .results-meta span {
-  color: var(--brand-color);
-  font-weight: 700;
+    font-weight: 700;
+    color: var(--text-main);
 }
 
+/* ==========================================================================
+   5. RECIPE GRID & CARDS
+   ========================================================================== */
 #recipes {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 40px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .card {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    background: var(--bg-white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-main);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition-fast);
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
 }
 
 .card-header {
-  position: relative;
-  width: 100%;
-  height: 200px;
+    position: relative;
+    height: 200px;
+    width: 100%;
+    background: var(--bg-muted);
 }
 
 .card-header img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-header .cuisine,
+.card-header .btn-favorite {
+    position: absolute;
+    top: 12px;
+    background: rgba(33, 37, 41, 0.75);
+    color: var(--text-white);
+    backdrop-filter: blur(4px);
 }
 
 .card-header .cuisine {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: rgba(33, 37, 41, 0.75);
-  color: #ffffff;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  padding: 4px 10px;
-  border-radius: 6px;
+    left: 12px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .card-header .btn-favorite {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(33, 37, 41, 0.75);
-  color: #ffffff;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
+    right: 12px;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: var(--transition-fast);
+}
+
+.card-header .btn-favorite:hover,
+.card-header .btn-favorite.active {
+    background: var(--bg-white);
+    color: var(--brand-color);
 }
 
 .card-header .btn-favorite:hover {
-  background: #ffffff;
-  color: #f59e0b;
-  transform: scale(1.1);
-}
-
-.card-header .btn-favorite.active {
-  background: #ffffff;
-  color: #f59e0b;
+    transform: scale(1.1);
 }
 
 .card-header .btn-favorite.active i {
-  font-weight: 900;
+    font-weight: 900;
 }
 
 .card-body {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  justify-content: space-between;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
 }
 
-.card-body > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: #6c757d;
-  margin-bottom: 8px;
+.card-body > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
 }
 
-.card h2 {
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin: 4px 0 16px;
-  color: #111;
-  line-height: 1.3;
+.card-body .rating {
+    color: var(--brand-color);
+    font-weight: 700;
 }
 
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-weight: 700;
-  color: #111111;
-  font-size: 0.9rem;
+.card-body .rating .reviews {
+    color: var(--text-light);
+    font-weight: 400;
 }
 
-.rating i {
-  color: var(--brand-color);
-  font-size: 0.85rem;
-  margin-top: -1px;
+.card-body h2 {
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+    line-height: 1.4;
 }
 
-.rating .reviews {
-  color: #888888;
-  font-weight: 500;
-  margin-left: 2px;
+.card-body > div:nth-child(3) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
 }
 
 .difficulty {
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
-  border: 1px solid transparent;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: capitalize;
 }
 
-.difficulty.easy {
-  background: #f1fdf4;
-  color: #166534;
-  border-color: #dcfce7;
-}
-
-.difficulty.medium {
-  background: #fffbeb;
-  color: #92400e;
-  border-color: #fef3c7;
-}
-
-.difficulty.hard {
-  background: #fef2f2;
-  color: #991b1b;
-  border-color: #fee2e2;
-}
+.difficulty.easy   { background: #d1fae5; color: #065f46; }
+.difficulty.medium { background: #fef3c7; color: #92400e; }
+.difficulty.hard   { background: #fee2e2; color: #991b1b; }
 
 .card button.btn-details {
-  width: 100%;
-  margin-top: 12px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ced4da;
-  background: transparent;
-  color: #212529;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px;
+    background: var(--bg-light);
+    border: 1px solid #dee2e6;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
 }
 
 .card button.btn-details:hover {
-  background: var(--brand-color);
-  color: #ffffff;
-  border-color: var(--brand-color);
+    background: var(--brand-color);
+    color: var(--text-white);
+    border-color: var(--brand-color);
 }
+
+/* ==========================================================================
+   6. RECIPE DETAILS PAGE & UTILITIES
+   ========================================================================== */
+.recipe-details-card {
+    padding: 24px;
+}
+
+.details-hero-img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.details-title {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+}
+
+.details-meta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    color: #555555;
+    font-size: 0.95rem;
+}
+
+.details-subtitle {
+    margin: 20px 0 10px;
+    color: var(--text-dark);
+}
+
+.details-list {
+    padding-left: 20px;
+    line-height: 1.8;
+    color: #333333;
+}
+
+.ingredients-list {
+    margin-bottom: 24px;
+}
+
+.instructions-list {
+    margin-bottom: 30px;
+}
+
+.instructions-list li {
+    margin-bottom: 8px;
+}
+
+.icon-brand { color: var(--brand-color); }
+.icon-star  { color: var(--brand-color); }
 
 .status-msg {
-  grid-column: 1 / -1;
-  text-align: center;
-  font-weight: 600;
-  padding: 40px;
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 500;
 }
 
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
 footer {
-  background: #ffffff;
-  border-top: 1px solid #e9ecef;
-  padding: 24px 20px;
-  margin-top: auto;
-  text-align: center;
+    background: var(--bg-white);
+    border-top: 1px solid var(--border-main);
+    padding: 24px 40px;
+    text-align: center;
+    margin-top: auto;
 }
 
 footer .copyright {
-  font-size: 0.85rem;
-  color: #6c757d;
+    font-size: 0.85rem;
+    color: var(--text-muted);
 }
 
 footer .copyright a {
-  color: #212529;
-  text-decoration: none;
-  font-weight: 600;
-  border-bottom: 1px dotted #adb5bd;
-  transition: border-color 0.2s;
+    color: var(--brand-color);
+    text-decoration: none;
+    font-weight: 600;
 }
 
 footer .copyright a:hover {
-  color: var(--brand-color);
-  border-bottom: 1px solid var(--brand-color);
+    text-decoration: underline;
 }
