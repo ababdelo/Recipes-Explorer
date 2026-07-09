@@ -20,6 +20,3 @@ tmp/
 
 # Ignore history files
 .history/
-
-# Preview Images
-assets/imgs/preview/
