@@ -266,6 +266,39 @@
             border-radius: 6px;
         }
 
+        .card-header .btn-favorite {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(33, 37, 41, 0.75);
+            color: #ffffff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .card-header .btn-favorite:hover {
+            background: #ffffff;
+            color: #f59e0b;
+            transform: scale(1.1);
+        }
+
+        .card-header .btn-favorite.active {
+            background: #ffffff;
+            color: #f59e0b;
+        }
+
+        .card-header .btn-favorite.active i {
+            font-weight: 900;
+        }
+
         .card-body {
             padding: 16px;
             display: flex;
@@ -339,7 +372,7 @@
             border-color: #fee2e2;
         }
 
-        .card button {
+        .card button.btn-details {
             width: 100%;
             margin-top: 12px;
             padding: 10px;
@@ -353,7 +386,7 @@
             transition: all 0.2s ease;
         }
 
-        .card button:hover {
+        .card button.btn-details:hover {
             background: var(--brand-color);
             color: #ffffff;
             border-color: var(--brand-color);
@@ -471,6 +504,14 @@
             ['cuisine', 'difficulty', 'mealType'].forEach(id => {
                 document.getElementById(id).addEventListener('change', applyFilters);
             });
+            document.getElementById('recipes').addEventListener('click', (event) => {
+                const favButton = event.target.closest('.btn-favorite');
+
+                if (favButton) {
+                    const recipeId = parseInt(favButton.dataset.id, 10);
+                    toggleFavorite(recipeId, favButton);
+                }
+            });
         }
 
         async function getRecipes() {
@@ -493,6 +534,15 @@
                 console.error('Error fetching recipes:', error);
                 container.innerHTML = `<div class="status-msg" style="color: #DC2626;">Failed to load recipes. Please try again later.</div>`;
             }
+        }
+
+        function getFavorites() {
+            const favs = localStorage.getItem('recipe_favorites');
+            return favs ? JSON.parse(favs) : [];
+        }
+
+        function saveFavorites(favArray) {
+            localStorage.setItem('recipe_favorites', JSON.stringify(favArray));
         }
 
         function setFilters(recipes) {
@@ -543,31 +593,56 @@
             renderRecipes(filteredRecipes);
         }
 
+        function toggleFavorite(recipeId, buttonElement) {
+            let favorites = getFavorites();
+            const icon = buttonElement.querySelector('i');
+
+            if (favorites.includes(recipeId)) {
+                favorites = favorites.filter(id => id !== recipeId);
+                buttonElement.classList.remove('active');
+                icon.classList.replace('fa-solid', 'fa-regular');
+            } else {
+                favorites.push(recipeId);
+                buttonElement.classList.add('active');
+                icon.classList.replace('fa-regular', 'fa-solid');
+            }
+
+            saveFavorites(favorites);
+        }
+
         function generateRecipeCard(recipe, parent) {
+            const favorites = getFavorites();
+            const isFavorited = favorites.includes(recipe.id);
+
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                    <div class='card-header'>
-                        <span class='cuisine'>${recipe.cuisine.toUpperCase()}</span>
-                        <img src='${recipe.image}' alt='${recipe.name}' loading='lazy'/>
+                <div class='card-header'>
+                    <span class='cuisine'>${recipe.cuisine.toUpperCase()}</span>
+                    
+                    <button class='btn-favorite ${isFavorited ? 'active' : ''}' data-id='${recipe.id}' aria-label="Add to favorites">
+                        <i class="fa-${isFavorited ? 'solid' : 'regular'} fa-heart"></i>
+                    </button>
+                    
+                    <img src='${recipe.image}' alt='${recipe.name}' loading='lazy'/>
+                </div>
+                <div class='card-body'>
+                    <div>
+                        <span>${recipe.mealType.join(', ')}</span>
+                        <span class='rating'>
+                            <i class="fa-solid fa-star"></i> 
+                            <span>${recipe.rating}</span> 
+                            <span class='reviews'>(${recipe.reviewCount} reviews)</span>
+                        </span>    
                     </div>
-                    <div class='card-body'>
-                        <div>
-                            <span>${recipe.mealType.join(', ')}</span>
-                            <span class='rating'>
-                                <i class="fa-solid fa-star"></i> 
-                                <span>${recipe.rating}</span> 
-                                <span class='reviews'>(${recipe.reviewCount} reviews)</span>
-                            </span>    
-                        </div>
-                        <h2>${recipe.name}</h2>
-                        <div>
-                            <p><i class="fa-regular fa-clock"></i> ${recipe.prepTimeMinutes} min</p>
-                            <span class='difficulty ${recipe.difficulty.toLowerCase()}'>${recipe.difficulty}</span>
-                        </div>
-                        <button class='btn-details' data-id='${recipe.id}'>See Details</button>
+                    <h2>${recipe.name}</h2>
+                    <div>
+                        <p><i class="fa-regular fa-clock"></i> ${recipe.prepTimeMinutes} min</p>
+                        <span class='difficulty ${recipe.difficulty.toLowerCase()}'>${recipe.difficulty}</span>
                     </div>
-                `;
+                    <button class='btn-details' data-id='${recipe.id}'>See Details</button>
+                </div>
+            `;
             parent.appendChild(card);
         }
 
