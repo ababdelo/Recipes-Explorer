@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/fontAwesome.css">
 </head>
+
 <body>
     <header>
         <div class="logo">
@@ -17,6 +19,11 @@
         <nav>
             <ul>
                 <li><a href="index.html"><i class="fa-regular fa-house"></i> Home</a></li>
+                <li>
+                    <button id="theme-toggle" class="btn-theme" aria-label="Toggle Theme">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
@@ -31,10 +38,13 @@
     </main>
 
     <footer>
-        <p class="copyright">© <span id="date"></span> Recipes Explorer. Developed by <a href="https://ed42.tech" target="_blank">ed42</a>.</p>
+        <p class="copyright">© <span id="date"></span> Recipes Explorer. Developed by <a href="https://ed42.tech"
+                target="_blank">ed42</a>.</p>
     </footer>
 
     <script src="./assets/js/common.js"></script>
     <script src="./assets/js/favorites.js"></script>
+    <script src="./assets/js/theme.js"></script>
 </body>
+
 </html>
