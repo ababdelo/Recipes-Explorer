@@ -1,7 +1,4 @@
-
-// ==========================================
-// 1. LOCAL STORAGE (FAVORITES)
-// ==========================================
+/* === 1. LOCAL STORAGE (FAVORITES) */
 function getFavorites() {
     const favs = localStorage.getItem('recipe_favorites');
     return favs ? JSON.parse(favs) : [];
@@ -13,89 +10,88 @@ function saveFavorites(favArray) {
 
 function toggleFavorite(recipeId, buttonElement) {
     let favorites = getFavorites();
-    const icon = buttonElement.querySelector('i');
+    const $btn = $(buttonElement);
+    const $icon = $btn.find('i');
+    const isFavorited = favorites.includes(recipeId);
 
-    if (favorites.includes(recipeId)) {
+    if (isFavorited) {
         favorites = favorites.filter(id => id !== recipeId);
-        buttonElement.classList.remove('active');
-        icon.classList.replace('fa-solid', 'fa-regular');
+        $btn.removeClass('active');
     } else {
         favorites.push(recipeId);
-        buttonElement.classList.add('active');
-        icon.classList.replace('fa-regular', 'fa-solid');
+        $btn.addClass('active');
     }
-
     saveFavorites(favorites);
+
+    $icon.fadeOut(100, function() {
+        if (isFavorited) {
+            $icon.removeClass('fa-solid').addClass('fa-regular');
+        } else {
+            $icon.removeClass('fa-regular').addClass('fa-solid');
+        }
+    }).fadeIn(100);
 }
 
-// ==========================================
-// 2. SHARED UI HELPERS
-// ==========================================
+/* === 2. SHARED UI HELPERS === */
 function setFooterYear() {
-    const dateSpan = document.getElementById('date');
-    if (dateSpan) {
-        dateSpan.textContent = new Date().getFullYear();
-    }
+    $('#date').text(new Date().getFullYear());
 }
 
 function generateRecipeCard(recipe, parentContainer) {
     const favorites = getFavorites();
     const isFavorited = favorites.includes(recipe.id);
+    const $parent = $(parentContainer);
 
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-        <div class='card-header'>
-            <span class='cuisine'>${recipe.cuisine.toUpperCase()}</span>
-            <button class='btn-favorite ${isFavorited ? 'active' : ''}' data-id='${recipe.id}' aria-label="Add to favorites">
-                <i class="fa-${isFavorited ? 'solid' : 'regular'} fa-heart"></i>
-            </button>
-            <img src='${recipe.image}' alt='${recipe.name}' loading='lazy'/>
-        </div>
-        <div class='card-body'>
-            <div>
-                <span>${recipe.mealType.join(', ')}</span>
-                <span class='rating'>
-                    <i class="fa-solid fa-star"></i> 
-                    <span>${recipe.rating}</span> 
-                    <span class='reviews'>(${recipe.reviewCount} reviews)</span>
-                </span>    
+    const cardHtml = `
+        <div class='card'>
+            <div class='card-header'>
+                <span class='cuisine'>${recipe.cuisine.toUpperCase()}</span>
+                <button class='btn-favorite ${isFavorited ? 'active' : ''}' data-id='${recipe.id}' aria-label="Add to favorites">
+                    <i class="fa-${isFavorited ? 'solid' : 'regular'} fa-heart"></i>
+                </button>
+                <img src='${recipe.image}' alt='${recipe.name}' loading='lazy'/>
             </div>
-            <h2>${recipe.name}</h2>
-            <div>
-                <p><i class="fa-regular fa-clock"></i> ${recipe.prepTimeMinutes} min</p>
-                <span class='difficulty ${recipe.difficulty.toLowerCase()}'>${recipe.difficulty}</span>
+            <div class='card-body'>
+                <div>
+                    <span>${recipe.mealType.join(', ')}</span>
+                    <span class='rating'>
+                        <i class="fa-solid fa-star"></i> 
+                        <span>${recipe.rating}</span> 
+                        <span class='reviews'>(${recipe.reviewCount} reviews)</span>
+                    </span>    
+                </div>
+                <h2>${recipe.name}</h2>
+                <div>
+                    <p><i class="fa-regular fa-clock"></i> ${recipe.prepTimeMinutes} min</p>
+                    <span class='difficulty ${recipe.difficulty.toLowerCase()}'>${recipe.difficulty}</span>
+                </div>
+                <button class='btn-details' data-id='${recipe.id}'>See Details</button>
             </div>
-            <button class='btn-details' data-id='${recipe.id}'>See Details</button>
         </div>
     `;
-    parentContainer.appendChild(card);
+    
+    $(cardHtml).hide().appendTo($parent).fadeIn(350);
 }
 
-// ==========================================
-// 3. GLOBAL EVENT DELEGATION
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
+/* === 3. GLOBAL EVENT DELEGATION === */
+$(document).ready(() => {
     setFooterYear();
-    const recipesGrid = document.getElementById('recipes');
-    if (recipesGrid) {
-        recipesGrid.addEventListener('click', (event) => {
-            const favButton = event.target.closest('.btn-favorite');
-            if (favButton) {
-                const recipeId = parseInt(favButton.dataset.id, 10);
-                toggleFavorite(recipeId, favButton);
-                if (window.location.pathname.includes('favorites.html')) {
-                    favButton.closest('.card').remove();
-                    if (recipesGrid.children.length === 0) {
-                        recipesGrid.innerHTML = `<div class="status-msg">You haven't added any favorites yet!</div>`;
-                    }
+    
+    $('#recipes').on('click', '.btn-favorite', function() {
+        const recipeId = parseInt($(this).data('id'), 10);
+        toggleFavorite(recipeId, this);
+        
+        if (window.location.pathname.includes('favorites.html')) {
+            $(this).closest('.card').fadeOut(300, function() {
+                $(this).remove();
+                if ($('#recipes').children().length === 0) {
+                    $('#recipes').html(`<div class="status-msg">You haven't added any favorites yet!</div>`).hide().fadeIn(300);
                 }
-            }
-            const detailsButton = event.target.closest('.btn-details');
-            if (detailsButton) {
-                const recipeId = detailsButton.dataset.id;
-                window.location.href = `recipe-details.html?id=${recipeId}`;
-            }
-        });
-    }
+            });
+        }
+    });
+
+    $('#recipes').on('click', '.btn-details', function() {
+        window.location.href = `recipe-details.html?id=${$(this).data('id')}`;
+    });
 });

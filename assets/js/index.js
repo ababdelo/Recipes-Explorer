@@ -1,71 +1,57 @@
-
 let allRecipes = [];
 
-document.addEventListener('DOMContentLoaded', () => {
+$(document).ready(() => {
     setupEventListeners();
     getRecipes();
 });
 
 function setupEventListeners() {
-    document.getElementById('search-bar').addEventListener('input', applyFilters);
-    ['cuisine', 'difficulty', 'mealType'].forEach(id => {
-        document.getElementById(id).addEventListener('change', applyFilters);
-    });
+    $('#search-bar').on('input', applyFilters);
+    $('#cuisine, #difficulty, #mealType').on('change', applyFilters);
 }
 
 async function getRecipes() {
-    const container = document.getElementById('recipes');
-    container.innerHTML = '<div class="status-msg">Loading recipes...</div>';
+    const $container = $('#recipes');
+    $container.html('<div class="status-msg">Loading recipes...</div>');
 
     try {
         const response = await fetch('https://dummyjson.com/recipes');
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
         const data = await response.json();
         allRecipes = data.recipes;
 
         setFilters(allRecipes);
         renderRecipes(allRecipes);
-
     } catch (error) {
-        console.error('Error fetching recipes:', error);
-        container.innerHTML = `<div class="status-msg" style="color: #DC2626;">Failed to load recipes. Please try again later.</div>`;
+        $container.html(`<div class="status-msg" style="color: #DC2626;">Failed to load recipes.</div>`);
     }
 }
 
 function setFilters(recipes) {
-    const cuisineSel = document.getElementById('cuisine');
-    const difficultySel = document.getElementById('difficulty');
-    const mealTypeSel = document.getElementById('mealType');
+    const $cuisineSel = $('#cuisine');
+    const $difficultySel = $('#difficulty');
+    const $mealTypeSel = $('#mealType');
 
-    [cuisineSel, difficultySel, mealTypeSel].forEach(select => select.options.length = 1);
+    // Clear and reset using jQuery
+    $cuisineSel.empty().append('<option value="all" selected>All Cuisines</option>');
+    $difficultySel.empty().append('<option value="all" selected>All Difficulties</option>');
+    $mealTypeSel.empty().append('<option value="all" selected>All Meal Types</option>');
 
-    const allCuisines = [...new Set(recipes.map(r => r.cuisine))];
-    const allDifficulties = [...new Set(recipes.map(r => r.difficulty))];
-    const allMealTypes = [...new Set(recipes.flatMap(r => r.mealType))];
-
-    allCuisines.sort().forEach(c => cuisineSel.add(new Option(c, c.toLowerCase())));
-    allDifficulties.sort().forEach(d => difficultySel.add(new Option(d, d.toLowerCase())));
-    allMealTypes.sort().forEach(m => mealTypeSel.add(new Option(m, m.toLowerCase())));
+    [...new Set(recipes.map(r => r.cuisine))].sort().forEach(c => $cuisineSel.append(new Option(c, c.toLowerCase())));
+    [...new Set(recipes.map(r => r.difficulty))].sort().forEach(d => $difficultySel.append(new Option(d, d.toLowerCase())));
+    [...new Set(recipes.flatMap(r => r.mealType))].sort().forEach(m => $mealTypeSel.append(new Option(m, m.toLowerCase())));
 }
 
 function applyFilters() {
-    if (!allRecipes.length) return;
-
-    const search = document.getElementById('search-bar').value.trim().toLowerCase();
-    const cuisine = document.getElementById('cuisine').value;
-    const difficulty = document.getElementById('difficulty').value;
-    const mealType = document.getElementById('mealType').value;
+    const search = $('#search-bar').val().trim().toLowerCase();
+    const cuisine = $('#cuisine').val();
+    const difficulty = $('#difficulty').val();
+    const mealType = $('#mealType').val();
 
     const filteredRecipes = allRecipes.filter(recipe => {
-        const matchSearch = !search ||
-            recipe.name.toLowerCase().includes(search) ||
-            recipe.ingredients.some(ing => ing.toLowerCase().includes(search));
-
+        const matchSearch = !search || recipe.name.toLowerCase().includes(search) || recipe.ingredients.some(ing => ing.toLowerCase().includes(search));
         const matchCuisine = cuisine === 'all' || recipe.cuisine.toLowerCase() === cuisine;
         const matchDifficulty = difficulty === 'all' || recipe.difficulty.toLowerCase() === difficulty;
         const matchMealType = mealType === 'all' || recipe.mealType.some(m => m.toLowerCase() === mealType);
-
         return matchSearch && matchCuisine && matchDifficulty && matchMealType;
     });
 
@@ -73,18 +59,16 @@ function applyFilters() {
 }
 
 function renderRecipes(recipesArray) {
-    const container = document.getElementById('recipes');
-    container.innerHTML = '';
+    const $container = $('#recipes');
+    $container.empty();
 
-    document.getElementById('found').textContent = recipesArray.length;
-    document.getElementById('total').textContent = allRecipes.length;
+    $('#found').text(recipesArray.length);
+    $('#total').text(allRecipes.length);
 
     if (recipesArray.length === 0) {
-        container.innerHTML = `<div class="status-msg" style="color: #6c757d;">No recipes found matching your criteria.</div>`;
+        $container.html(`<div class="status-msg">No recipes found.</div>`).hide().fadeIn(300);
         return;
     }
 
-    recipesArray.forEach(recipe => {
-        generateRecipeCard(recipe, container);
-    });
+    recipesArray.forEach(recipe => generateRecipeCard(recipe, '#recipes'));
 }

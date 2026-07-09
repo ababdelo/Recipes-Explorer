@@ -1,16 +1,16 @@
-document.addEventListener('DOMContentLoaded', () => {
+$(document).ready(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const recipeId = urlParams.get('id');
 
     if (recipeId) {
         fetchRecipeDetails(recipeId);
     } else {
-        document.getElementById('recipe-container').innerHTML = '<div class="status-msg">Recipe not found.</div>';
+        $('#recipe-container').hide().html('<div class="status-msg">Recipe not found.</div>').fadeIn(300);
     }
 });
 
 async function fetchRecipeDetails(id) {
-    const container = document.getElementById('recipe-container');
+    const $container = $('#recipe-container');
     try {
         const response = await fetch(`https://dummyjson.com/recipes/${id}`);
         if (!response.ok) throw new Error('Could not fetch recipe.');
@@ -18,13 +18,13 @@ async function fetchRecipeDetails(id) {
         const recipe = await response.json();
         renderDetails(recipe);
     } catch (error) {
-        container.innerHTML = `<div class="status-msg" style="color: #DC2626;">Error loading recipe details.</div>`;
+        $container.hide().html(`<div class="status-msg" style="color: #DC2626;">Error loading recipe details.</div>`).fadeIn(300);
     }
 }
 
 function renderDetails(recipe) {
-    const container = document.getElementById('recipe-container');
-    container.innerHTML = `
+    const $container = $('#recipe-container');
+    const htmlContent = `
         <div class="card recipe-details-card">
             <img src="${recipe.image}" alt="${recipe.name}" class="details-hero-img">
             <h1 class="details-title">${recipe.name}</h1>
@@ -50,4 +50,6 @@ function renderDetails(recipe) {
             </ol>
         </div>
     `;
+    
+    $container.hide().html(htmlContent).fadeIn(400);
 }
