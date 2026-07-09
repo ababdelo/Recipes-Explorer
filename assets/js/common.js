@@ -91,6 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+            const detailsButton = event.target.closest('.btn-details');
+            if (detailsButton) {
+                const recipeId = detailsButton.dataset.id;
+                window.location.href = `recipe-details.html?id=${recipeId}`;
+            }
         });
     }
 });
