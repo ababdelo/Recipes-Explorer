@@ -5,7 +5,8 @@ $(document).ready(() => {
     if (recipeId) {
         fetchRecipeDetails(recipeId);
     } else {
-        $('#recipe-container').hide().html('<div class="status-msg">Recipe not found.</div>').fadeIn(300);
+        const $container = $('#recipe-container');
+        showEmptyState($container, 'Recipe not found. Please check the link.');
     }
 });
 
@@ -14,11 +15,10 @@ async function fetchRecipeDetails(id) {
     try {
         const response = await fetch(`https://dummyjson.com/recipes/${id}`);
         if (!response.ok) throw new Error('Could not fetch recipe.');
-
         const recipe = await response.json();
         renderDetails(recipe);
     } catch (error) {
-        $container.hide().html(`<div class="status-msg" style="color: #DC2626;">Error loading recipe details.</div>`).fadeIn(300);
+        showErrorState($container, 'Error loading recipe details. Please try again later.');
     }
 }
 
@@ -50,6 +50,6 @@ function renderDetails(recipe) {
             </ol>
         </div>
     `;
-    
+
     $container.hide().html(htmlContent).fadeIn(400);
 }
