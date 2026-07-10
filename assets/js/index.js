@@ -16,13 +16,14 @@ async function getRecipes() {
 
     try {
         const response = await fetch('https://dummyjson.com/recipes');
+        if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         allRecipes = data.recipes;
 
         setFilters(allRecipes);
         renderRecipes(allRecipes);
     } catch (error) {
-        $container.html(`<div class="status-msg" style="color: #DC2626;">Failed to load recipes.</div>`);
+        showErrorState($container, 'Failed to load recipes. Please try again later.');
     }
 }
 
@@ -31,7 +32,6 @@ function setFilters(recipes) {
     const $difficultySel = $('#difficulty');
     const $mealTypeSel = $('#mealType');
 
-    // Clear and reset using jQuery
     $cuisineSel.empty().append('<option value="all" selected>All Cuisines</option>');
     $difficultySel.empty().append('<option value="all" selected>All Difficulties</option>');
     $mealTypeSel.empty().append('<option value="all" selected>All Meal Types</option>');
@@ -66,7 +66,7 @@ function renderRecipes(recipesArray) {
     $('#total').text(allRecipes.length);
 
     if (recipesArray.length === 0) {
-        $container.html(`<div class="status-msg">No recipes found.</div>`).hide().fadeIn(300);
+        showEmptyState($container, 'No recipes found. Try adjusting your filters.');
         return;
     }
 
