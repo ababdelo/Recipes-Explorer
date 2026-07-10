@@ -7,18 +7,23 @@ async function loadFavorites() {
     const favoriteIds = getFavorites();
 
     if (favoriteIds.length === 0) {
-        $container.html(`<div class="status-msg">You haven't added any favorites yet!</div>`);
+        showEmptyState($container, "You haven't added any favorites yet!");
         return;
     }
 
     try {
         const response = await fetch('https://dummyjson.com/recipes');
+        if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         const favRecipes = data.recipes.filter(recipe => favoriteIds.includes(recipe.id));
-        
+
         $container.empty();
-        favRecipes.forEach(recipe => generateRecipeCard(recipe, '#recipes'));
+        if (favRecipes.length === 0) {
+            showEmptyState($container, "Your favorite recipes couldn't be found. They might have been removed.");
+        } else {
+            favRecipes.forEach(recipe => generateRecipeCard(recipe, '#recipes'));
+        }
     } catch (error) {
-        $container.html(`<div class="status-msg" style="color: #DC2626;">Failed to load favorites.</div>`);
+        showErrorState($container, 'Failed to load favorites. Please try again later.');
     }
 }
