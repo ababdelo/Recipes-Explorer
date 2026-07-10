@@ -1,4 +1,4 @@
-/* === 1. LOCAL STORAGE (FAVORITES) */
+/* === 1. LOCAL STORAGE (FAVORITES) === */
 function getFavorites() {
     const favs = localStorage.getItem('recipe_favorites');
     return favs ? JSON.parse(favs) : [];
@@ -23,7 +23,7 @@ function toggleFavorite(recipeId, buttonElement) {
     }
     saveFavorites(favorites);
 
-    $icon.fadeOut(100, function() {
+    $icon.fadeOut(100, function () {
         if (isFavorited) {
             $icon.removeClass('fa-solid').addClass('fa-regular');
         } else {
@@ -69,29 +69,45 @@ function generateRecipeCard(recipe, parentContainer) {
             </div>
         </div>
     `;
-    
+
     $(cardHtml).hide().appendTo($parent).fadeIn(350);
 }
 
-/* === 3. GLOBAL EVENT DELEGATION === */
+/* === 3. EMPTY / ERROR STATE WITH ILLUSTRATION === */
+function showEmptyState($container, message = 'No items found.') {
+    const html = `
+        <div class="empty-state">
+            <img src="./assets/imgs/noItemFound.png" alt="No items found" class="empty-state-img">
+            <p class="empty-state-msg">${message}</p>
+        </div>
+    `;
+    $container.empty().append(html);
+}
+
+function showErrorState($container, message = 'Something went wrong. Please try again later.') {
+    showEmptyState($container, message);
+}
+
+/* === 4. GLOBAL EVENT DELEGATION === */
 $(document).ready(() => {
     setFooterYear();
-    
-    $('#recipes').on('click', '.btn-favorite', function() {
+
+    $('#recipes').on('click', '.btn-favorite', function () {
         const recipeId = parseInt($(this).data('id'), 10);
         toggleFavorite(recipeId, this);
-        
+
         if (window.location.pathname.includes('favorites.html')) {
-            $(this).closest('.card').fadeOut(300, function() {
+            const $card = $(this).closest('.card');
+            $card.fadeOut(300, function () {
                 $(this).remove();
                 if ($('#recipes').children().length === 0) {
-                    $('#recipes').html(`<div class="status-msg">You haven't added any favorites yet!</div>`).hide().fadeIn(300);
+                    showEmptyState($('#recipes'), "You haven't added any favorites yet!");
                 }
             });
         }
     });
 
-    $('#recipes').on('click', '.btn-details', function() {
+    $('#recipes').on('click', '.btn-details', function () {
         window.location.href = `recipe-details.html?id=${$(this).data('id')}`;
     });
 });
