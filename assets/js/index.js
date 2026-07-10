@@ -5,6 +5,15 @@ $(document).ready(() => {
     getRecipes();
 });
 
+/* === HIDE THE LOADING SPLASH SCREEN === */
+function hideLoader() {
+    const $loader = $('#app-loader');
+    if ($loader.length) {
+        $loader.addClass('hidden');
+        setTimeout(() => $loader.remove(), 700);
+    }
+}
+
 function setupEventListeners() {
     $('#search-bar').on('input', applyFilters);
     $('#cuisine, #difficulty, #mealType').on('change', applyFilters);
@@ -12,7 +21,7 @@ function setupEventListeners() {
 
 async function getRecipes() {
     const $container = $('#recipes');
-    $container.html('<div class="status-msg">Loading recipes...</div>');
+    const startTime = Date.now();
 
     try {
         const response = await fetch('https://dummyjson.com/recipes');
@@ -22,10 +31,25 @@ async function getRecipes() {
 
         setFilters(allRecipes);
         renderRecipes(allRecipes);
+
+        const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(0, 2000 - elapsed);
+
+        setTimeout(() => {
+            hideLoader();
+        }, remainingTime);
+
     } catch (error) {
-        showErrorState($container, 'Failed to load recipes. Please try again later.');
+        const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(0, 500 - elapsed);
+
+        setTimeout(() => {
+            hideLoader();
+            showErrorState($container, 'Failed to load recipes. Please try again later.');
+        }, remainingTime);
     }
 }
+
 
 function setFilters(recipes) {
     const $cuisineSel = $('#cuisine');
